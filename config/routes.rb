@@ -17,7 +17,7 @@ Rails.application.routes.draw do
     delete  '/logout',  to: 'users/sessions#destroy'
     post    '/signup',  to: 'users/users#create'
 
-    resources :users, module: "users", :only => [:show, :index, :destroy]
+    resources :users, module: "users", :only => [:show, :index, :destroy, :update]
   end
 
   api_version(APIVersion::V2) do

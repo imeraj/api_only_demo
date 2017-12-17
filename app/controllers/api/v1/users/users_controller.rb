@@ -1,5 +1,5 @@
 class Api::V1::Users::UsersController < ApplicationController
-  load_and_authorize_resource
+  load_and_authorize_resource only: :destroy
   before_action :authenticate_with_token, only: [:index, :destroy, :show]
 
   def index
@@ -36,9 +36,23 @@ class Api::V1::Users::UsersController < ApplicationController
     end
   end
 
+  def update
+    if current_user.update(update_user_params)
+      @user = current_user
+      render "users/show", status: :success
+    else
+      @message = "Wrong number/format of parameters."
+      render "errors/base", status: :unprocessable_entity
+    end
+  end
+
   private
   def user_params
     params.require("user").permit(:username, :email, :password, :password_confirmation)
+  end
+
+  def update_user_params
+    params.require("user").permit(:username, :password, :password_confirmation)
   end
 
 end
