@@ -9,19 +9,15 @@ Rails.application.routes.draw do
                                      defaults: { format: :json }, &routes
   end
 
+  get 'hello',  to: 'welcome#hello'
+
   api_version(APIVersion::V1) do
-    get 'hello',  to: 'welcome#hello'
+  
+    post    '/login',   to: 'users/sessions#create'
+    delete  '/logout',  to: 'users/sessions#destroy'
+    post    '/signup',  to: 'users/users#create'
 
-    devise_for :users, skip: :all
-    devise_scope :user do
-      post    'login',   to: 'users/sessions#create'
-      delete  'logout',  to: 'users/sessions#destroy'
-
-      post    'signup', to: 'users/registrations#create'
-    end
-
-
-
+    resources :users, module: "users", :only => [:show, :index]
   end
 
   api_version(APIVersion::V2) do
