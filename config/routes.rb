@@ -12,12 +12,12 @@ Rails.application.routes.draw do
   get 'hello',  to: 'welcome#hello'
 
   api_version(APIVersion::V1) do
-  
+
     post    '/login',   to: 'users/sessions#create'
     delete  '/logout',  to: 'users/sessions#destroy'
     post    '/signup',  to: 'users/users#create'
 
-    resources :users, module: "users", :only => [:show, :index]
+    resources :users, module: "users", :only => [:show, :index, :destroy]
   end
 
   api_version(APIVersion::V2) do

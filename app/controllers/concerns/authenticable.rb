@@ -4,7 +4,8 @@ module Authenticable
   end
 
   def authenticate_with_token
-    render json: { errors: "Please log in first!" }, status: :unauthorized unless signed_in?
+    @message = "Please log in first!"
+    render "errors/base", :status => :unauthorized unless signed_in?
   end
 
   def signed_in?

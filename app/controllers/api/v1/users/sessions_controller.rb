@@ -16,28 +16,30 @@ class Api::V1::Users::SessionsController < ApplicationController
     if resource.valid_password?(params[:session][:password])
       resource.authentication_token = User.generate_authentication_token!
       resource.save!
+      @auth_token = resource.authentication_token
+      render "sessions/create", :status => :success
     else
       invalid_login_attempt
     end
-    render :json => {:auth_token => resource.authentication_token}, :status => :success
   end
 
   # DELETE /resource/sign_out
   def destroy
-    current_user.authentication_token = User.generate_authentication_token!
-    current_user.save!
-    render :json => {:message =>  "Logged out successfully!" }, :status => :success
+      current_user.authentication_token = User.generate_authentication_token!
+      current_user.save!
+      render "base", :status => :success
   end
 
   protected
   def ensure_params_exist
     return unless params[:session][:email].blank? or params[:session][:password].blank?
-    render :json => {:message => "Missing email or password" }, :status => :unprocessable_entity
+    @message = "Missing email or password."
+    render "errors/base", :status => :unprocessable_entity
   end
 
   def invalid_login_attempt
-    warden.custom_failure!
-    render :json => {:message => "Email of password is invalid" }, :status => :unauthorized
+    @message = "Email of password is invalid."
+    render "errors/base", :status => :unauthorized
   end
 
 end
