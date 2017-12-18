@@ -1,6 +1,6 @@
 class Api::V1::Users::UsersController < ApplicationController
   load_and_authorize_resource only: :destroy
-  before_action :authenticate_with_token, only: [:index, :destroy, :show]
+  before_action :authenticate_with_token, only: [:index, :destroy, :show, :update]
 
   def index
     @users = User.all
@@ -12,7 +12,7 @@ class Api::V1::Users::UsersController < ApplicationController
     if @user
       render "users/show", status: :ok
     else
-      render "models/errors", status: :not_found
+      render "models/user_errors", status: :not_found
     end
   end
 
@@ -29,6 +29,8 @@ class Api::V1::Users::UsersController < ApplicationController
     user = User.find(params[:id])
     if user and current_user and !user.admin? and can? :destroy, user
       user.destroy
+      products = user.products.where(published: true)
+      products.update_all(published: false) unless products.empty?
       head :no_content
     else
       @message = "Unauthorized"

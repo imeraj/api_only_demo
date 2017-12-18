@@ -1,4 +1,5 @@
 class User < ApplicationRecord
+  has_many :products
   before_save { email.downcase! }
 
   # Include default devise modules. Others available are:

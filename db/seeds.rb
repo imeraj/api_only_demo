@@ -13,13 +13,21 @@ admin = User.create!(username: "meraj",
         password_confirmation: "12345678",
                         admin: true)
 
-50.times do
+50.times do 
      username = Faker::Name.name
      email = Faker::Internet.email
      password = "password"
-     User.create!(username: username,
+     user = User.create!(username: username,
                      email: email,
                   password: password,
      password_confirmation: password,
                      admin: false)
+
+    50.times do |i|
+      title = Faker::Commerce.product_name
+      price = Faker::Commerce.price
+      published = i.even? ? true: false
+
+      user.products.create!(title: title, price: price, published: published)
+    end
 end
