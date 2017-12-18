@@ -27,6 +27,7 @@ class Api::V1::Users::SessionsController < ApplicationController
   def destroy
       current_user.authentication_token = User.generate_authentication_token!
       current_user.save!
+      sign_out
       render "base", :status => :success
   end
 
