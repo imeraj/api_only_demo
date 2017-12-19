@@ -2,7 +2,9 @@ class Api::V1::ProductsController < ApplicationController
   before_action :authenticate_with_token
 
   def index
-    @products = Product.where(published: true)
+    @page = params[:page].present? ? params[:page] : 1
+    @per_page = params[:per_page].present? ? params[:per_page]: 10
+    @products = Product.where(published: true).page(@page).per(@per_page)
     render "products/index", status: :ok
   end
 
