@@ -8,11 +8,12 @@ class Api::V1::Users::UsersController < ApplicationController
   end
 
   def show
-    @user = User.find(params[:id])
+    @user = User.find_by_id(params[:id])
     if @user
       render "users/show", status: :ok
     else
-      render "models/user_errors", status: :not_found
+      @message = "User not found."
+      render "errors/base", status: :not_found
     end
   end
 
@@ -26,7 +27,7 @@ class Api::V1::Users::UsersController < ApplicationController
   end
 
   def destroy
-    user = User.find(params[:id])
+    user = User.find_by_id(params[:id])
     if user and current_user and !user.admin? and can? :destroy, user
       user.destroy
       products = user.products.where(published: true)

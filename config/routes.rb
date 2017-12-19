@@ -21,6 +21,7 @@ Rails.application.routes.draw do
       resources :products, :only => [:index]
     end
     resources :products, :only => [:show, :index, :create, :update, :destroy]
+    resources :orders,   :only => [:show, :create]
   end
 
   api_version(APIVersion::V2) do
