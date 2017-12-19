@@ -1,3 +1,4 @@
+cache "products_index", expires_in: 1.minute
 object false
 child(:meta) {
   child(:pagination) {

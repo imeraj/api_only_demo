@@ -16,7 +16,13 @@ class Api::V1::OrdersController < ApplicationController
   def show
     @order = current_user.orders.find_by_id(params[:id])
     if @order
-      render "orders/show", status: :ok
+      # ETag caching: Consumer must send If-None-Match (Etag)
+      # or If-Modified-Since (Last Modified)
+      if stale?(etag: @order, last_modified: @order.updated_at, public: true)
+        render "orders/show", status: :ok
+      else
+        head :not_modified
+      end
     else
       @message = "Order not found for current user."
       render "errors/base", status: :not_found
