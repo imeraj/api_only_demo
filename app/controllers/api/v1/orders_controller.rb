@@ -6,7 +6,8 @@ class Api::V1::OrdersController < ApplicationController
                                             true, params[:order][:product_ids])
     @order = current_user.orders.build(:product_ids => valid_ids_assoc.ids)
     if @order.save
-      render "orders/show", status: :crebuild_associationated, location: orders_path(@order)
+      OrderMailer.send_confirmation(@order).deliver
+      render "orders/show", status: :ok, location: orders_path(@order)
     else
       render "models/order_errors", status: :unprocessable_entity
     end
