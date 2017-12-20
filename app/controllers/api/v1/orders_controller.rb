@@ -18,7 +18,7 @@ class Api::V1::OrdersController < ApplicationController
     if @order
       # ETag caching: Consumer must send If-None-Match (Etag)
       # or If-Modified-Since (Last Modified)
-      if stale?(etag: @order, last_modified: @order.updated_at, public: true)
+      if stale?(strong_etag: @order, last_modified: @order.created_at, public: true)
         render "orders/show", status: :ok
       else
         head :not_modified
