@@ -2,6 +2,11 @@ class Api::V1::Users::UsersController < ApplicationController
   load_and_authorize_resource only: :destroy
   before_action :authenticate_with_token, only: [:index, :destroy, :show, :update]
 
+  rescue_from CanCan::AccessDenied do |exception|
+    @message = "Operation not permitted."
+    render "errors/base", status: :forbidden
+  end
+
   def index
     @users = User.all
     render "users/index", status: :ok
@@ -33,9 +38,6 @@ class Api::V1::Users::UsersController < ApplicationController
       products = user.products.where(published: true)
       products.update_all(published: false) unless products.empty?
       head :no_content
-    else
-      @message = "Unauthorized"
-      render "errors/base", status: :unauthorized
     end
   end
 
