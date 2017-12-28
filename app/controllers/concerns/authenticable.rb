@@ -16,4 +16,8 @@ module Authenticable
     @current_user = nil
   end
 
+  def set_scout_context
+    ScoutApm::Context.add_user(email: current_user.email) if current_user.is_a?(User)
+  end
+
 end

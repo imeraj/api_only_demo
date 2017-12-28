@@ -30,6 +30,9 @@ gem 'faker',          '1.7.3'
 gem 'simple_token_authentication', '1.15.1'
 gem 'cancancan',      '~> 2.0'
 gem 'kaminari',       '1.1.1'
+gem 'scout_apm',      '2.3.4'
+gem 'delayed_job_active_record', '4.1.2'
+
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
