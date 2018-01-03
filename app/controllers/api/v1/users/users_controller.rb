@@ -27,7 +27,7 @@ class Api::V1::Users::UsersController < ApplicationController
     if @user.save
       render "users/show", status: :created, location: signup_path(@user)
     else
-      render "models/errors", status: :unprocessable_entity
+      render "models/user_errors", status: :unprocessable_entity
     end
   end
 
