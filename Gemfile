@@ -19,6 +19,7 @@ gem 'puma', '~> 3.7'
 gem 'bcrypt', '~> 3.1.7'
 
 gem 'rabl',   '0.13.1'
+gem 'rack-cors', :require => 'rack/cors'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
